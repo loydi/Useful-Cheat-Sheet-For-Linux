@@ -1,2 +1,3 @@
-# linux-usefuly-cheat-sheet
-Linux Useful Cheet Sheet
+# Linux Useful Cheet Sheet
+I'll share some usefuly command and script in this repo...
+
