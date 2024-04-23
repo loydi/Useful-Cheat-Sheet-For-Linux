@@ -1,0 +1,100 @@
+# Git Command Reference
+
+## Basic Usage
+
+### List User Specific Opened Files
+lsof -u root
+
+### Find Processes running on Specific Port
+lsof -i TCP:22
+
+### Exclude User with ‘^’ Character
+lsof -i -u^root
+
+### Search by PID
+lsof -p 1
+
+### List all files opened by a particular command
+lsof -c dhcpd
+
+### List open files that have no links to them on the filesystem
+lsof +L1
+
+### Kill all Activity of Particular User
+kill -9 `lsof -t -u doe`
+
+### Eavesdrop on your system
+diff <(lsof -p 1234) <(sleep 10; lsof -p 1234)
+
+## Filesystem related commands
+
+### List files opened by a PID
+lsof -p 15857
+
+### Show which process is blocking umount (Device or resource is busy)
+lsof /folder
+
+### Find Out who’s Looking What Files and Commands?
+lsof -i -u doe
+
+### Discov­ering all open files/dirs underneath a directory
+lsof +D <di­rna­me>
+
+### View user activity per directory.
+sudo lsof -u someuser -a +D /etc
+
+### Debug how files are being accessed by a process
+inotif­ywait -m -r .
+
+## Network related commands
+
+### List all Network Connec­tions
+lsof -i
+
+### Which process has a port open
+lsof -i :80
+
+### Find the process that is using a certain port e.g. port 3000
+lsof -P | grep ':3000'
+
+### List Only IPv4/IPv6 Open Files
+lsof -i 4
+lsof -6
+
+### List Open Files of TCP Port ranges 1-1024
+lsof -i TCP:1-1024
+
+### Which program is this port belongs to ?
+lsof -i tcp:80
+
+### List all open ports and their owning execut­ables
+lsof -i -P | grep -i "­lis­ten­"
+
+### Check open ports (IPv4)
+lsof -Pni4 | grep LISTEN
+
+### Show apps that use internet connection at the moment. (Multi­-La­nguage)
+lsof -P -i -n
+
+### Lists all listening ports together with the PID of the associated process
+lsof -Pan -i tcp -i udp
+
+### View network activity of any applic­ation or user in realtime
+lsof -r 2 -p PID -i -a
+
+### Show apps that use internet connection at the moment.
+lsof -P -i -n | cut -f 1 -d " "| uniq | tail -n +2
+
+## Other commands
+
+### Keep a copy of the raw Youtube FLV,MP­4,etc stored in /tmp/
+lsof -n -P|grep FlashX­X|awk '{ print "­/pr­oc/­" $2 "­/fd­/" substr($4, 1, length­($4)-1) }'|while read f;do newnam­e=$­(ex­iftool -FileM­odi­fyDate -FileType -t -d %Y%m%d­%H%M%S $f|cut -f2|tr 'n' '.'|sed 's/.$/­/')­;echo "$f -> $newna­me";cp $f ~/Vids­/$n­ewn­ame­;done
+
+### Check which files are opened by Firefox then sort by largest size.
+lsof -p $(pidof firefox) | awk '/.moz­illa/ { s = int($7­/(2­^20)); if(s>0) print (s)" MB -- "$9 | "sort -rn" }'
+
+### Check how far along (in %) your program is in a file
+F=bigd­ata.xz; lsof -o0 -o -Fo $F | awk -Ft -v s=$(stat -c %s $F) '/^o/{­pri­ntf­("%d­%%n­", 100*$2­/s)}'
+
+### Display any tcp connec­tions to apache
+for i in `ps aux | grep httpd | awk '{print $2}'`; do lsof -n -p $i | grep ESTABL­ISHED; done;
