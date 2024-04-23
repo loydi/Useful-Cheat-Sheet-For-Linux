@@ -1,3 +1,3 @@
-# Linux Useful Cheet Sheet
+# Useful Cheet Sheet for Linux
 I'll share some usefuly command and script in this repo...
 
